@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
+  id           String       @id
   email        String    @unique
   firstname    String?
   lastname     String?
@@ -19,8 +19,8 @@ model User {
 }
 
 model Session {
-  id             Int    @id @default(autoincrement())
-  user_id        Int
+  id             String    @id
+  user_id        String
   active_expires BigInt
   idle_expires   BigInt
   user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -29,9 +29,9 @@ model Session {
 }
 
 model Key {
-  id              Int     @id @default(autoincrement())
+  id              String     @id
   hashed_password String?
-  user_id         Int
+  user_id         String
   user            User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
