@@ -1,6 +1,4 @@
 import { auth } from '../../utils/lucia';
-import { fail, redirect } from '@sveltejs/kit';
-import { LuciaError } from 'lucia';
 
 export const actions = {
 	default: async ({ request, locals }) => {
