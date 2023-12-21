@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  firstname    String?
+  lastname     String?
+  password     String
+  username     String
+  key          Key[]
+  auth_session Session[]
+}
+
+model Session {
+  id             Int    @id @default(autoincrement())
+  user_id        Int
+  active_expires BigInt
+  idle_expires   BigInt
+  user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Key {
+  id              Int     @id @default(autoincrement())
+  hashed_password String?
+  user_id         Int
+  user            User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
