@@ -1,14 +1,24 @@
 import { auth } from '../../utils/lucia';
+import { fail, redirect } from '@sveltejs/kit';
+
+export const load = async ({ locals }) => {
+	const session = await locals.auth.validate();
+	if (session) {
+		throw redirect(302, '/');
+	}
+	return {};
+};
 
 export const actions = {
 	default: async ({ request, locals }) => {
 		const formData = await request.formData();
-		const email = formData.get('email');
+		const email = String(formData.get('email'));
 		const password = formData.get('password');
+		const username = formData.get("username");
 		// basic check
 		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
-			return new Response('Invalid password', {
-				status: 400
+			return fail(400, {
+				message: 'Invalid password'
 			});
 		}
 		try {
@@ -19,29 +29,24 @@ export const actions = {
 					password // hashed by Lucia
 				},
 				attributes: {
-					email: email.toLowerCase()
+					email: email.toLowerCase(),
+					username: username
 				}
 			});
 			const session = await auth.createSession({
 				userId: user.userId,
 				attributes: {}
 			});
-
-			const sessionCookie = auth.createSessionCookie(session);
-			return new Response(null, {
-				headers: {
-					Location: '/', // profile page
-					'Set-Cookie': sessionCookie.serialize() // store session cookie
-				},
-				status: 302
-			});
+			locals.auth.setSession(session); // set session cookie
 		} catch (e) {
-			// this part depends on the database you're using
 			// check for unique constraint error in user table
-
-			return new Response('An unknown error occurred', {
-				status: 500
+			console.log(e);
+			return fail(500, {
+				message: 'An unknown error occurred'
 			});
 		}
+		// redirect to
+		// make sure you don't throw inside a try/catch block!
+		throw redirect(302, '/login');
 	}
 };

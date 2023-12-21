@@ -9,7 +9,11 @@
 				<legend>Road Side Assistance Web Admin</legend>
 				<div class="form-group">
 					<label for="email">Email</label>
-					<input id="email" name="email" type="text" minlength="5" placeholder="test" />
+					<input id="email" name="email" type="email" minlength="5" placeholder="test" />
+				</div>
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input id="username" name="username" type="text" minlength="5" placeholder="test" />
 				</div>
 				<div class="form-group">
 					<label for="pw">Password</label>

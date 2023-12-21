@@ -4,7 +4,7 @@
 
 <div class="container">
 	<section>
-		<form method="POST" use:enhance action="?/login">
+		<form method="POST" use:enhance>
 			<fieldset>
 				<legend>Road Side Assistance Web Admin</legend>
 				<div class="form-group">

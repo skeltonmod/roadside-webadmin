@@ -12,10 +12,11 @@ model User {
   email        String    @unique
   firstname    String?
   lastname     String?
-  password     String
   username     String
   key          Key[]
   auth_session Session[]
+
+  @@map("users")
 }
 
 model Session {
@@ -26,6 +27,7 @@ model Session {
   user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
+  @@map("users_session")
 }
 
 model Key {
@@ -35,4 +37,5 @@ model Key {
   user            User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
+  @@map("users_key")
 }
