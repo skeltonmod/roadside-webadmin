@@ -9,18 +9,17 @@ datasource db {
 
 model User {
   id           String       @id
-  email        String    @unique
-  firstname    String?
-  lastname     String?
+  email        String       @unique
   username     String
   key          Key[]
   auth_session Session[]
+  details      UserDetail?
 
   @@map("users")
 }
 
 model Session {
-  id             String    @id
+  id             String @id
   user_id        String
   active_expires BigInt
   idle_expires   BigInt
@@ -30,8 +29,18 @@ model Session {
   @@map("users_session")
 }
 
+model UserDetail {
+  id      String  @id @default(uuid())
+  role    String
+  details String @db.LongText
+  user_id String @unique
+  user    User   @relation(fields: [user_id], references: [id])
+
+  @@map("user_details")
+}
+
 model Key {
-  id              String     @id
+  id              String  @id
   hashed_password String?
   user_id         String
   user            User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
