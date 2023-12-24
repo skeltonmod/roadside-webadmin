@@ -14,7 +14,6 @@ export async function POST({ request, cookies }) {
 			},
 			attributes: {
 				email: email.toLowerCase(),
-				username: username
 			}
 		});
 		

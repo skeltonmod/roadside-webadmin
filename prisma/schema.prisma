@@ -15,7 +15,7 @@ enum CarTransmission {
 model User {
   id           String      @id
   email        String      @unique
-  username     String
+  username     String?
   key          Key[]
   auth_session Session[]
   details      UserDetail?
@@ -42,6 +42,7 @@ model UserDetail {
   details Json
   user_id String @unique
   user    User   @relation(fields: [user_id], references: [id])
+  image String? @db.LongText
 
   @@map("user_details")
 }
@@ -56,6 +57,7 @@ model Cars {
   year         String
   fuel         String
   transmission CarTransmission
+  image String? @db.LongText
 
   @@map("cars")
 }
@@ -69,7 +71,6 @@ model Shops {
   details  Json?
   user_id  String  @unique
   user     User    @relation(fields: [user_id], references: [id])
-
   @@map("shops")
 }
 
