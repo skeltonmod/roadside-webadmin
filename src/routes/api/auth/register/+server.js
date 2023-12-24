@@ -3,8 +3,8 @@ import prisma from '../../../../utils/client';
 import { auth } from '../../../../utils/lucia';
 import { json, error } from '@sveltejs/kit';
 
-export async function POST({ request, cookies }) {
-	const { username, password, email, role, details } = await request.json();
+export async function POST({ request }) {
+	const { password, email, role, details } = await request.json();
 	try {
 		const user = await auth.createUser({
 			key: {
