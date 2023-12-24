@@ -1,11 +1,10 @@
 // @ts-nocheck
 import prisma from '../../../../utils/client';
 import { auth } from '../../../../utils/lucia';
-import { json, fail } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
 
 export async function POST({ request, cookies }) {
 	const { username, password, email, role, details } = await request.json();
-
 	try {
 		const user = await auth.createUser({
 			key: {
@@ -18,11 +17,11 @@ export async function POST({ request, cookies }) {
 				username: username
 			}
 		});
-		const json_string = JSON.stringify(details);
+		
 		await prisma.userDetail.create({
 			data: {
 				role,
-				details: json_string,
+				details: {...details},
 				user_id: user.userId
 			}
 		});
@@ -39,8 +38,6 @@ export async function POST({ request, cookies }) {
 	} catch (e) {
 		// check for unique constraint error in user table
 		console.log(e);
-		return fail(500, {
-			message: 'An unknown error occurred'
-		});
+		throw error(500, `Something went wrong: ${e}`)
 	}
 }

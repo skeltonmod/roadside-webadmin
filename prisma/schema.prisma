@@ -32,11 +32,16 @@ model Session {
 model UserDetail {
   id      String  @id @default(uuid())
   role    String
-  details String @db.LongText
+  details Json 
   user_id String @unique
   user    User   @relation(fields: [user_id], references: [id])
 
   @@map("user_details")
+}
+
+model UserCar {
+  id String @id @default(uuid())
+  
 }
 
 model Key {
