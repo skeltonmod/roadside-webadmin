@@ -1,6 +1,6 @@
 import prisma from '../../../../utils/client';
 import { auth } from '../../../../utils/lucia';
-import { error, fail, json } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 /** @type {import('./$types').RequestHandler} */
 export async function GET({request, cookies}) {
     const authRequest = auth.handleRequest({request, cookies});
