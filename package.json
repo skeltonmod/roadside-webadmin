@@ -38,6 +38,7 @@
 	"dependencies": {
 		"@lucia-auth/adapter-prisma": "^3.0.2",
 		"@prisma/client": "5.7.1",
+		"@supabase/supabase-js": "^2.39.1",
 		"bcryptjs": "^2.4.3",
 		"js-cookie": "^3.0.5",
 		"jsonwebtoken": "^9.0.2",

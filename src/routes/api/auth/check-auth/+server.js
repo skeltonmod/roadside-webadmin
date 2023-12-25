@@ -1,9 +1,23 @@
+import prisma from '../../../../utils/client';
 import { auth } from '../../../../utils/lucia';
-import { fail, json } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 /** @type {import('./$types').RequestHandler} */
 export async function GET({request, cookies}) {
-    const authRequest = auth.handleRequest({request: request, cookies});
+    const authRequest = auth.handleRequest({request, cookies});
     const session = await authRequest.validateBearerToken();
 
-    return json(session)
+    if(!session){
+        throw error(401, 'Forbidden');
+    }
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: session.user.userId
+        },
+        include: {
+            details: true
+        }
+    });
+
+    return json({...session, user});
 }

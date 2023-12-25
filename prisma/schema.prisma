@@ -7,13 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum CarTransmission {
+  Automatic
+  Manual
+}
+
 model User {
-  id           String       @id
-  email        String       @unique
-  username     String
+  id           String      @id
+  email        String      @unique
+  username     String?
   key          Key[]
   auth_session Session[]
   details      UserDetail?
+  cars         Cars[]
+  shops        Shops[]
 
   @@map("users")
 }
@@ -30,13 +37,41 @@ model Session {
 }
 
 model UserDetail {
-  id      String  @id @default(uuid())
+  id      String @id @default(uuid())
   role    String
-  details String @db.LongText
+  details Json
   user_id String @unique
   user    User   @relation(fields: [user_id], references: [id])
+  image String? @db.LongText
 
   @@map("user_details")
+}
+
+model Cars {
+  id           String          @id @default(uuid())
+  user_id      String          @unique
+  user         User            @relation(fields: [user_id], references: [id])
+  brand        String
+  model        String
+  color        String
+  year         String
+  fuel         String
+  transmission CarTransmission
+  image String? @db.LongText
+
+  @@map("cars")
+}
+
+model Shops {
+  id       String  @id @default(uuid())
+  name     String
+  phone    String?
+  address  String?
+  location Json?
+  details  Json?
+  user_id  String  @unique
+  user     User    @relation(fields: [user_id], references: [id])
+  @@map("shops")
 }
 
 model Key {
