@@ -1,4 +1,4 @@
-import { json } from "@sveltejs/kit";
+import { json, error } from "@sveltejs/kit";
 import { auth } from "../../../../utils/lucia";
 import prisma from "../../../../utils/client";
 
