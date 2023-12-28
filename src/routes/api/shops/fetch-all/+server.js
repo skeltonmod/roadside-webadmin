@@ -22,7 +22,6 @@ export async function GET({request, cookies}){
 
     const shops = await prisma.userDetail.findMany({
         where: {
-            role: 'shop',
             OR: [
                 {
                     role: 'shop'
