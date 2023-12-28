@@ -1,6 +1,7 @@
 import { json, error } from "@sveltejs/kit";
 import { auth } from "../../../../utils/lucia";
 import prisma from "../../../../utils/client";
+import supabase from "../../../../utils/supabase";
 
 export async function POST({request, cookies}){
     const {car_id, mechanic_id, location} = await request.json();
@@ -20,6 +21,20 @@ export async function POST({request, cookies}){
             location
         }
     });
+
+    const channel = supabase.channel(mechanic_id);
+
+    channel.subscribe((status) => {
+        if (status !== 'SUBSCRIBED') {
+            return null
+        }
+
+        channel.send({
+            type: 'broadcast',
+            event: 'mechanic_booking',
+            payload: booking,
+        })
+    })
 
     return json(booking);
 }

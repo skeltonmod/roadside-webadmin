@@ -81,12 +81,14 @@ model Request {
   car_id      String @unique
   car         Cars   @relation(fields: [car_id], references: [id])
   location    Json?
-  mechanic_id String @unique
-  user_id     String @unique
+  mechanic_id String
+  user_id     String
   status String @default("pending")
 
   owner_rating    Int?
   mechanic_rating Int?
+
+  @@map("requests")
 }
 
 model Key {
