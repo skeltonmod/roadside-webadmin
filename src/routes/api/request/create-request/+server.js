@@ -3,13 +3,13 @@ import { auth } from "../../../../utils/lucia";
 import prisma from "../../../../utils/client";
 import supabase from "../../../../utils/supabase";
 
-export async function POST({request, cookies}){
-    const {car_id, mechanic_id, location} = await request.json();
+export async function POST({ request, cookies }) {
+    const { car_id, mechanic_id, location } = await request.json();
 
-    const authRequest = auth.handleRequest({request, cookies});
+    const authRequest = auth.handleRequest({ request, cookies });
     const session = await authRequest.validateBearerToken();
 
-    if(!session){
+    if (!session) {
         throw error(401, 'Forbidden');
     }
 
@@ -24,17 +24,17 @@ export async function POST({request, cookies}){
 
     const channel = supabase.channel(mechanic_id);
 
-    channel.subscribe((status) => {
-        if (status !== 'SUBSCRIBED') {
-            return null
-        }
+    // channel.subscribe((status) => {
+    //     if (status !== 'SUBSCRIBED') {
+    //         return null
+    //     }
 
-        channel.send({
-            type: 'broadcast',
-            event: 'mechanic_booking',
-            payload: booking,
-        })
-    })
+    //     channel.send({
+    //         type: 'broadcast',
+    //         event: 'mechanic_booking',
+    //         payload: booking,
+    //     })
+    // })
 
     return json(booking);
 }
