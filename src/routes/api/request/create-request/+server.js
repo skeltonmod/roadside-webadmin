@@ -1,10 +1,9 @@
 import { json, error } from "@sveltejs/kit";
 import { auth } from "../../../../utils/lucia";
 import prisma from "../../../../utils/client";
-import supabase from "../../../../utils/supabase";
 
 export async function POST({ request, cookies }) {
-    const { car_id, mechanic_id, location } = await request.json();
+    const { car_id, mechanic_id, description } = await request.json();
 
     const authRequest = auth.handleRequest({ request, cookies });
     const session = await authRequest.validateBearerToken();
@@ -18,9 +17,8 @@ export async function POST({ request, cookies }) {
             car_id,
             user_id: session.user.userId,
             mechanic_id,
-            location
+            description
         }
     });
-
     return json(booking);
 }

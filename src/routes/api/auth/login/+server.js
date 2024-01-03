@@ -37,9 +37,7 @@ export async function POST({ request }) {
 			// eslint-disable-next-line no-case-declarations
 			try {
 				// const { data, error } = await supabase.from('active_mechanics').insert([{ user: user, user_id: user.id }]).select("*");
-
 				console.log("Data", data);
-
 				console.log("Error", error);
 			} catch (e) {
 				console.log(e);
