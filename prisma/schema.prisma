@@ -80,7 +80,6 @@ model Request {
   id          String @id @default(uuid())
   car_id      String @unique
   car         Cars   @relation(fields: [car_id], references: [id])
-  location    Json?
   mechanic_id String
   user_id     String
   status String @default("pending")

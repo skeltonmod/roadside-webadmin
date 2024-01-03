@@ -22,19 +22,5 @@ export async function POST({ request, cookies }) {
         }
     });
 
-    const channel = supabase.channel(mechanic_id);
-
-    // channel.subscribe((status) => {
-    //     if (status !== 'SUBSCRIBED') {
-    //         return null
-    //     }
-
-    //     channel.send({
-    //         type: 'broadcast',
-    //         event: 'mechanic_booking',
-    //         payload: booking,
-    //     })
-    // })
-
     return json(booking);
 }
