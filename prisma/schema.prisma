@@ -22,6 +22,10 @@ model User {
   cars         Cars[]
   shops        Shops[]
 
+  // Add these fields for relations
+  requestsAsUser     Request[] @relation("UserRequests")
+  requestsAsMechanic Request[] @relation("MechanicRequests")
+
   @@map("users")
 }
 
@@ -77,15 +81,19 @@ model Shops {
 }
 
 model Request {
-  id          String @id @default(uuid())
-  car_id      String @unique
-  car         Cars   @relation(fields: [car_id], references: [id])
-  mechanic_id String
-  user_id     String
-  status String @default("pending")
-
-  owner_rating    Int?
+  id             String   @id @default(uuid())
+  car_id         String   @unique
+  car            Cars     @relation(fields: [car_id], references: [id])
+  mechanic_id    String
+  user_id        String
+  description    String?
+  status         String   @default("pending")
+  owner_rating   Int?
   mechanic_rating Int?
+
+  // Relationship to User model
+  user         User @relation(name: "UserRequests", fields: [user_id], references: [id])
+  mechanic     User @relation(name: "MechanicRequests", fields: [mechanic_id], references: [id])
 
   @@map("requests")
 }

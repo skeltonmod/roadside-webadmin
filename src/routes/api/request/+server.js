@@ -13,8 +13,12 @@ export async function GET({ request, cookies }) {
     const req = await prisma.request.findMany({
         where: {
             mechanic_id: session.user.userId
+        },
+        include: {
+            car: true,
+            user: true,
+            mechanic: true
         }
     });
-
-    return json({ req });
+    return json(req);
 }
