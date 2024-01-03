@@ -11,13 +11,13 @@ export async function GET({ request, cookies }) {
     }
 
     const req = await prisma.request.findMany({
-        where: {
-            mechanic_id: session.user.userId
-        },
-        include: {
+        select: {
             car: true,
             user: true,
             mechanic: true
+        },
+        where: {
+            mechanic_id: session.user.userId
         }
     });
     return json(req);
