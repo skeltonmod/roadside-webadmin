@@ -1,24 +1,39 @@
-import { json, error } from "@sveltejs/kit";
-import { auth } from "../../../utils/lucia.js";
-import prisma from "../../../utils/client.js";
+import { json, error } from '@sveltejs/kit';
+import { auth } from '../../../utils/lucia.js';
+import prisma from '../../../utils/client.js';
 
 export async function GET({ request, cookies }) {
-    const authRequest = auth.handleRequest({ request, cookies });
-    const session = await authRequest.validateBearerToken();
+	const authRequest = auth.handleRequest({ request, cookies });
+	const session = await authRequest.validateBearerToken();
 
-    if (!session) {
-        throw error(401, 'Forbidden');
-    }
+	if (!session) {
+		throw error(401, 'Forbidden');
+	}
 
-    const req = await prisma.request.findMany({
-        select: {
-            car: true,
-            user: true,
-            mechanic: true
-        },
+    const details = await prisma.userDetail.findUnique({
         where: {
-            mechanic_id: session.user.userId
+            user_id: session.user.userId
         }
     });
-    return json(req);
+
+	const req = await prisma.request.findMany({
+		where: {
+			mechanic_id: details?.role == 'mechanic' ? session.user.userId : undefined,
+            user_id: details?.role == 'owner' ? session.user.userId : undefined
+		},
+		include: {
+			car: true,
+			user: {
+				include: {
+					details: true
+				}
+			},
+			mechanic: {
+				include: {
+					details: true
+				}
+			}
+		}
+	});
+	return json(req);
 }
