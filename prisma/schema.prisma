@@ -62,8 +62,7 @@ model Cars {
   fuel         String
   transmission CarTransmission
   image        String?         @db.LongText
-  request      Request?
-
+  request      Request[]
   @@map("cars")
 }
 
@@ -82,14 +81,15 @@ model Shops {
 
 model Request {
   id             String   @id @default(uuid())
-  car_id         String   @unique
+  car_id         String
   car            Cars     @relation(fields: [car_id], references: [id])
   mechanic_id    String
   user_id        String
   description    String?
   status         String   @default("pending")
-  owner_rating   Int?
-  mechanic_rating Int?
+  owner_rating   Int?   @default(0)
+  mechanic_rating Int?  @default(0)
+  amount    Float? @default(0)
 
   // Relationship to User model
   user         User @relation(name: "UserRequests", fields: [user_id], references: [id])
