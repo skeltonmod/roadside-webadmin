@@ -19,5 +19,20 @@ export async function GET({request, cookies}) {
         }
     });
 
-    return json({...session, user});
+    const average_ratings = await prisma.request.findMany({
+        where: {
+            mechanic_id: user?.details?.role == 'mechanic' ? session.user.userId : undefined,
+			user_id: user?.details?.role == 'owner' ? session.user.userId : undefined,
+        }
+    }).then(r => {
+
+        const totalRatings = r.reduce((acc, item) => {
+            const rating = user?.details?.role == 'mechanic' ? item.mechanic_rating : item.owner_rating;
+            return acc + (rating || 0)
+        }, 0);
+        return r.length > 0 ? totalRatings / r.length : 0;
+    });
+    
+
+    return json({...session, user, average_ratings});
 }
