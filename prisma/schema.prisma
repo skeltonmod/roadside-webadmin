@@ -25,6 +25,8 @@ model User {
   // Add these fields for relations
   requestsAsUser     Request[] @relation("UserRequests")
   requestsAsMechanic Request[] @relation("MechanicRequests")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("users")
 }
@@ -35,7 +37,6 @@ model Session {
   active_expires BigInt
   idle_expires   BigInt
   user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
   @@index([user_id])
   @@map("users_session")
 }
@@ -47,7 +48,8 @@ model UserDetail {
   user_id String  @unique
   user    User    @relation(fields: [user_id], references: [id])
   image   String? @db.LongText
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   @@map("user_details")
 }
 
@@ -63,6 +65,8 @@ model Cars {
   transmission CarTransmission
   image        String?         @db.LongText
   request      Request[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   @@map("cars")
 }
 
@@ -75,7 +79,8 @@ model Shops {
   details  Json?
   user_id  String  @unique
   user     User    @relation(fields: [user_id], references: [id])
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   @@map("shops")
 }
 
@@ -94,7 +99,8 @@ model Request {
   // Relationship to User model
   user         User @relation(name: "UserRequests", fields: [user_id], references: [id])
   mechanic     User @relation(name: "MechanicRequests", fields: [mechanic_id], references: [id])
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   @@map("requests")
 }
 
