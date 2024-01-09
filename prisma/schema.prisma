@@ -27,6 +27,8 @@ model User {
   requestsAsMechanic Request[] @relation("MechanicRequests")
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+  reporter Reports[] @relation("Reporter")
+  reportee Reports[] @relation("Reportee")
 
   @@map("users")
 }
@@ -102,6 +104,18 @@ model Request {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   @@map("requests")
+}
+
+model Reports{
+  id String @id @default(uuid())
+  reporter_id String
+  reportee_id String
+
+  reporter User @relation(name: "Reporter", fields: [reporter_id], references: [id])
+  reportee User @relation(name: "Reportee", fields: [reportee_id], references: [id])
+
+  description String @db.LongText()
+  @@map("reports")
 }
 
 model Key {
