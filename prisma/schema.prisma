@@ -114,7 +114,9 @@ model Reports{
   reporter User @relation(name: "Reporter", fields: [reporter_id], references: [id])
   reportee User @relation(name: "Reportee", fields: [reportee_id], references: [id])
 
-  description String @db.LongText()
+  description String? @db.LongText()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   @@map("reports")
 }
 

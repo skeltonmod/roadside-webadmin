@@ -22,3 +22,13 @@ export const handle = async ({ event, resolve }) => {
 	}
 	return response;
 };
+
+/** @type {import('@sveltejs/kit').HandleServerError} */
+export async function handleError({ error, event, status, message }) {
+	return {
+		error,
+		event,
+		status,
+		message
+	};
+}
