@@ -29,6 +29,10 @@ export async function POST({ request }) {
 		}
 	});
 
+	if(!user.email_verified){
+		throw error(401, "Account not yet verified");
+	}
+
 	switch (user.details.role) {
 		case 'owner':
 			break;

@@ -2,6 +2,7 @@
 import prisma from '../../../../utils/client';
 import { auth } from '../../../../utils/lucia';
 import { json, error } from '@sveltejs/kit';
+import { generateEmailToken, sendMail } from './lib/helper';
 
 export async function POST({ request }) {
 	const { password, email, role, details } = await request.json();
@@ -33,6 +34,20 @@ export async function POST({ request }) {
                 details: true
             }
 		});
+
+		const token = await generateEmailToken(user.userId);
+		console.log("Connection Data", {
+			host: import.meta.env.VITE_MAIL_HOST,
+			port: import.meta.env.VITE_MAIL_PORT,
+			secure: true,
+			auth: {
+				user: import.meta.env.VITE_MAIL_USERNAME,
+				pass: import.meta.env.VITE_MAIL_PASSWORD
+			},
+			from: import.meta.env.VITE_MAIL_FROM_ADDRESS
+		});
+
+		await sendMail(email, token);
 		return json(response);
 	} catch (e) {
 		// check for unique constraint error in user table
