@@ -21,6 +21,8 @@ model User {
   details      UserDetail?
   cars         Cars[]
   shops        Shops[]
+  email_verified Boolean @default(false)
+  email_verification EmailVerification?
 
   // Add these fields for relations
   requestsAsUser     Request[] @relation("UserRequests")
@@ -118,6 +120,17 @@ model Reports{
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   @@map("reports")
+}
+
+model EmailVerification {
+  id String @id
+  expires BigInt
+  user_id String  @unique
+  user    User    @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+
+  @@map("email_verification_token")
 }
 
 model Key {
