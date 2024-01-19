@@ -17,6 +17,7 @@
     })
 
     const handleDeactivate = async (/** @type {any} */ id) => {
+        users = users.filter(item => item.id !== id);
         await fetch(`/api/users/delete/${id}`, {
             headers: {
                 'Authorization': `Bearer ${Cookies.get('auth_session')}`
