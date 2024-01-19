@@ -1,7 +1,6 @@
 import { auth } from '../../utils/lucia';
 import { fail, redirect } from '@sveltejs/kit';
 import { LuciaError } from 'lucia';
-
 export const load = async ({ locals }) => {
 	const session = await locals.auth.validate();
 	if (session) {

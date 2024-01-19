@@ -45,6 +45,7 @@
 		"lucia": "^2.7.5",
 		"nodemailer": "^6.9.8",
 		"prisma": "^5.7.1",
-		"svelte-mail": "^0.1.1"
+		"svelte-mail": "^0.1.1",
+		"vite-plugin-mkcert": "^1.17.3"
 	}
 }
