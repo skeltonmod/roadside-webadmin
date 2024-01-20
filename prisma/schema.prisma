@@ -49,6 +49,7 @@ model UserDetail {
   id      String  @id @default(uuid())
   role    String
   details Json
+  approved Boolean @default(false)
   user_id String  @unique
   user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
   image   String? @db.LongText
