@@ -12,6 +12,16 @@ export async function POST({ request, cookies }) {
         throw error(401, 'Forbidden');
     }
 
+    const details = await prisma.userDetail.findUnique({
+        where: {
+            user_id: session.user.userId
+        }
+    });
+
+    if(!details.approved){
+        throw error(401, 'You are not yet approved');
+    }
+
     const booking = await prisma.request.create({
         data: {
             car_id,

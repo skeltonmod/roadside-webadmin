@@ -6,7 +6,6 @@ import supabase from '../../../utils/supabase.js'
 export async function GET({ request, cookies }) {
 	const authRequest = auth.handleRequest({ request, cookies });
 	const session = await authRequest.validateBearerToken();
-	const response = [];
 	if (!session) {
 		throw error(401, 'Forbidden');
 	}

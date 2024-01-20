@@ -25,27 +25,46 @@
 		});
 	};
 
-    const handleApproval = async (id) => {
-        users = users.map(item => {
-            if(item.id == id){
-                return {
-                    ...item,
-                    details: {
-                        ...item.details,
-                        approved: true
-                    }
-                }
-            }
+	const handleApproval = async (id) => {
+		users = users.map((item) => {
+			if (item.id == id) {
+				return {
+					...item,
+					details: {
+						...item.details,
+						approved: true
+					}
+				};
+			}
 
-            return item;
-        });
+			return item;
+		});
 
-        await fetch(`/api/users/approve/${id}`, {
-            headers: {
-                Authorization: `Bearer ${Cookies.get('auth_session')}`
-            }
-        });
-    }
+		await fetch(`/api/users/approve/${id}`, {
+			headers: {
+				Authorization: `Bearer ${Cookies.get('auth_session')}`
+			}
+		});
+	};
+
+	const handleManualActivate = async (id) => {
+		users = users.map((item) => {
+			if (item.id == id) {
+				return {
+					...item,
+					email_verified: true
+				};
+			}
+
+			return item;
+		});
+
+		await fetch(`/api/users/activate/${id}`, {
+			headers: {
+				Authorization: `Bearer ${Cookies.get('auth_session')}`
+			}
+		});
+	}
 </script>
 
 <table style="width: 100%;">
@@ -75,13 +94,23 @@
 							handleDeactivate(user.id);
 						}}>Deactivate</a
 					>
+					{#if user.details.role != 'mechanic' || user.details.role != 'shop'}
+						<a
+							href="#Approve"
+							style={`color: ${user.details.approved ? 'grey' : ''}`}
+							on:click={() => {
+								handleApproval(user.id);
+							}}>{user.details.approved ? 'Already Approved' : 'Approve'}</a
+						>
+					{/if}
+
 					{#if user.details.role != 'owner'}
 						<a
 							href="#Approve"
-                            style={`color: ${user.details.approved ? 'grey' : ''}`}
+							style={`color: ${user.email_verified ? 'grey' : ''}`}
 							on:click={() => {
-								handleApproval(user.id);
-							}}>{user.details.approved ? 'Approved' : 'Approve'}</a
+								handleManualActivate(user.id);
+							}}>{user.email_verified ? 'Activated' : 'Activate'}</a
 						>
 					{/if}
 				</td>
