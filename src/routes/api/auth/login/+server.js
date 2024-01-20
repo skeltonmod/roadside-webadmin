@@ -2,7 +2,6 @@
 import prisma from '../../../../utils/client';
 import { auth } from '../../../../utils/lucia';
 import { json, error } from '@sveltejs/kit';
-import supabase from '../../../../utils/supabase';
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request }) {
@@ -41,7 +40,7 @@ export async function POST({ request }) {
 			// eslint-disable-next-line no-case-declarations
 			try {
 				// const { data, error } = await supabase.from('active_mechanics').insert([{ user: user, user_id: user.id }]).select("*");
-				console.log("Data", data);
+				// console.log("Data", data);
 				console.log("Error", error);
 			} catch (e) {
 				console.log(e);

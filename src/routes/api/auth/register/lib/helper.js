@@ -6,6 +6,7 @@ import * as nodemailer from 'nodemailer';
 
 const EXPIRES_IN = 1000 * 60 * 60 * 2;
 
+// @ts-ignore
 export const generateEmailToken = async (userId) => {
     const tokens = await prisma.emailVerification.findMany({
         where: {
@@ -35,6 +36,7 @@ export const generateEmailToken = async (userId) => {
     return token;
 }
 
+// @ts-ignore
 export const validateEmailToken = async (token) => {
     const stored_token = await prisma.emailVerification.findUnique({
         where: {
@@ -55,7 +57,9 @@ export const validateEmailToken = async (token) => {
     return stored_token.user_id;
 }
 
+// @ts-ignore
 export const sendMail = async (email, token) => {
+    // @ts-ignore
     const {html, text} = await renderMail(Mail, {data: {
         name: "User",
         token
