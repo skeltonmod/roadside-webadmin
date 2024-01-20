@@ -2,7 +2,6 @@
 import prisma from '../../../../utils/client';
 import { auth } from '../../../../utils/lucia';
 import { json, error } from '@sveltejs/kit';
-import supabase from '../../../../utils/supabase';
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request }) {
@@ -29,6 +28,10 @@ export async function POST({ request }) {
 		}
 	});
 
+	if(!user.email_verified){
+		throw error(401, "Account not yet verified");
+	}
+
 	switch (user.details.role) {
 		case 'owner':
 			break;
@@ -36,11 +39,9 @@ export async function POST({ request }) {
 		case 'mechanic':
 			// eslint-disable-next-line no-case-declarations
 			try {
-				const { data, error } = await supabase.from('active_mechanics').insert([{ user: user, user_id: user.id }]).select("*");
-
-                console.log("Data", data);
-
-                console.log("Error", error);
+				// const { data, error } = await supabase.from('active_mechanics').insert([{ user: user, user_id: user.id }]).select("*");
+				// console.log("Data", data);
+				console.log("Error", error);
 			} catch (e) {
 				console.log(e);
 			}

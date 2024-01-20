@@ -11,7 +11,7 @@ const config = {
 	preprocess: vitePreprocess(),
 	csrf: {
 		checkOrigin: false
-	}
+	},
 };
 
 export default config;

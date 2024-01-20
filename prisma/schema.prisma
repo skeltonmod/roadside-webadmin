@@ -21,6 +21,16 @@ model User {
   details      UserDetail?
   cars         Cars[]
   shops        Shops[]
+  email_verified Boolean @default(false)
+  email_verification EmailVerification?
+
+  // Add these fields for relations
+  requestsAsUser     Request[] @relation("UserRequests")
+  requestsAsMechanic Request[] @relation("MechanicRequests")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  reporter Reports[] @relation("Reporter")
+  reportee Reports[] @relation("Reportee")
 
   @@map("users")
 }
@@ -31,7 +41,6 @@ model Session {
   active_expires BigInt
   idle_expires   BigInt
   user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
   @@index([user_id])
   @@map("users_session")
 }
@@ -41,16 +50,17 @@ model UserDetail {
   role    String
   details Json
   user_id String  @unique
-  user    User    @relation(fields: [user_id], references: [id])
+  user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
   image   String? @db.LongText
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   @@map("user_details")
 }
 
 model Cars {
   id           String          @id @default(uuid())
   user_id      String          @unique
-  user         User            @relation(fields: [user_id], references: [id])
+  user         User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
   brand        String
   model        String
   color        String
@@ -58,8 +68,9 @@ model Cars {
   fuel         String
   transmission CarTransmission
   image        String?         @db.LongText
-  request      Request?
-
+  request      Request[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   @@map("cars")
 }
 
@@ -71,24 +82,55 @@ model Shops {
   location Json?
   details  Json?
   user_id  String  @unique
-  user     User    @relation(fields: [user_id], references: [id])
-
+  user     User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   @@map("shops")
 }
 
 model Request {
-  id          String @id @default(uuid())
-  car_id      String @unique
-  car         Cars   @relation(fields: [car_id], references: [id])
-  location    Json?
-  mechanic_id String
-  user_id     String
-  status String @default("pending")
+  id             String   @id @default(uuid())
+  car_id         String
+  car            Cars     @relation(fields: [car_id], references: [id], onDelete: Cascade)
+  mechanic_id    String
+  user_id        String
+  description    String?
+  status         String   @default("pending")
+  owner_rating   Int?   @default(0)
+  mechanic_rating Int?  @default(0)
+  amount    Float? @default(0)
 
-  owner_rating    Int?
-  mechanic_rating Int?
-
+  // Relationship to User model
+  user         User @relation(name: "UserRequests", fields: [user_id], references: [id], onDelete: Cascade)
+  mechanic     User @relation(name: "MechanicRequests", fields: [mechanic_id], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   @@map("requests")
+}
+
+model Reports{
+  id String @id @default(uuid())
+  reporter_id String
+  reportee_id String
+
+  reporter User @relation(name: "Reporter", fields: [reporter_id], references: [id], onDelete: Cascade)
+  reportee User @relation(name: "Reportee", fields: [reportee_id], references: [id], onDelete: Cascade)
+
+  description String? @db.LongText()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  @@map("reports")
+}
+
+model EmailVerification {
+  id String @id
+  expires BigInt
+  user_id String  @unique
+  user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+
+  @@map("email_verification_token")
 }
 
 model Key {

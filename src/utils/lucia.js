@@ -17,6 +17,7 @@ export const auth = lucia({
 		return {
 			userId: data.id,
       		email: data.email,
+			emailVerified: data.email_verified
 		};
 	}
 });
