@@ -1,9 +1,8 @@
-// npm add lucia-auth
 import { lucia } from 'lucia';
 import { sveltekit } from 'lucia/middleware';
 import { prisma as prismaAdapter } from '@lucia-auth/adapter-prisma';
 
-import client from './client';
+import client from './client.js';
 
 export const auth = lucia({
 	adapter: prismaAdapter(client, {

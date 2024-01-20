@@ -14,6 +14,11 @@ export async function GET({request, cookies}){
         include: {
             details: true,
             reporter: true
+        }, 
+        where: {
+            id: {
+                not: session.user.userId
+            }
         }
     });
 
