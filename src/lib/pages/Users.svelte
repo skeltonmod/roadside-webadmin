@@ -1,6 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
 	import Cookies from 'js-cookie';
+	import Modal from '../Components/Modal.svelte';
+	let showModal = false;
+	let image = null;
 	/**
 	 * @type {any[]}
 	 */
@@ -64,8 +67,16 @@
 				Authorization: `Bearer ${Cookies.get('auth_session')}`
 			}
 		});
-	}
+	};
 </script>
+
+<Modal bind:showModal>
+	{#if !image}
+		<p>No document image provided</p>
+	{:else}
+		<img alt="what ze fack" src={image} />
+	{/if}
+</Modal>
 
 <table style="width: 100%;">
 	<caption> Users </caption>
@@ -76,6 +87,8 @@
 			<th># of Reports</th>
 			<th>Verified</th>
 			<th>Role</th>
+			<th>Rating</th>
+			<th>Document</th>
 			<th>Action</th>
 		</tr>
 	</thead>
@@ -87,6 +100,16 @@
 				<td>{user.reporter.length}</td>
 				<td>{user.email_verified ? 'Yes' : 'No'}</td>
 				<td style="text-transform: capitalize">{user.details.role}</td>
+				<td>{`${parseInt(user.rating)} Star/s`}</td>
+				<td style="text-transform: capitalize"
+					><a
+						href="#image"
+						on:click={() => {
+							showModal = true;
+							image = user.document_image;
+						}}>View</a
+					></td
+				>
 				<td
 					><a
 						href="#Deactivate"
@@ -99,6 +122,9 @@
 							href="#Approve"
 							style={`color: ${user.details.approved ? 'grey' : ''}`}
 							on:click={() => {
+								if (user.details.approved) {
+									return;
+								}
 								handleApproval(user.id);
 							}}>{user.details.approved ? 'Already Approved' : 'Approve'}</a
 						>
@@ -109,6 +135,9 @@
 							href="#Approve"
 							style={`color: ${user.email_verified ? 'grey' : ''}`}
 							on:click={() => {
+								if (user.email_verified) {
+									return;
+								}
 								handleManualActivate(user.id);
 							}}>{user.email_verified ? 'Activated' : 'Activate'}</a
 						>
