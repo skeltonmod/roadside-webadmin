@@ -3,8 +3,7 @@ import { auth } from '../../../../utils/lucia.js';
 import prisma from '../../../../utils/client.js';
 import supabase from '../../../../utils/supabase.js';
 
-export async function POST({request, cookies}){
-    const {request_id} = await request.json();
+export async function GET({request, cookies}){
     const authRequest = auth.handleRequest({ request, cookies });
 	const session = await authRequest.validateBearerToken();
 
@@ -18,9 +17,12 @@ export async function POST({request, cookies}){
         user_id: session.user.userId
     });
 
-    await prisma.request.delete({
+    await prisma.request.deleteMany({
         where: {
-            id: request_id
+            status: 'pending',
+            createdAt: {
+                lt: new Date(new Date() - 5 * 60 * 1000)
+            }
         }
     });
 
