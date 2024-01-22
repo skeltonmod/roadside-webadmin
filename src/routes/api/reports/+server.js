@@ -10,7 +10,20 @@ export async function GET({request, cookies}){
         throw error(401, 'Forbidden');
     }
 
-    const reports = await prisma.reports.findMany();
+    const reports = await prisma.reports.findMany({
+        include: {
+            reportee: {
+                include: {
+                    details: true
+                }
+            },
+            reporter: {
+                include: {
+                    details: true
+                }
+            }
+        }
+    });
 
     return json(reports);
 }

@@ -53,6 +53,7 @@ model UserDetail {
   user_id String  @unique
   user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
   image   String? @db.LongText
+  location Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   @@map("user_details")
