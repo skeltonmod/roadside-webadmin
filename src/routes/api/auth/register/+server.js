@@ -5,7 +5,7 @@ import { json, error } from '@sveltejs/kit';
 import { generateEmailToken, sendMail } from './lib/helper';
 
 export async function POST({ request }) {
-	const { password, email, role, details } = await request.json();
+	const { password, email, role, details, location } = await request.json();
 	try {
 		const user = await auth.createUser({
 			key: {
@@ -22,7 +22,8 @@ export async function POST({ request }) {
 			data: {
 				role,
 				details: {...details},
-				user_id: user.userId
+				user_id: user.userId,
+				location
 			}
 		});
 
