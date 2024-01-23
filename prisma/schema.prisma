@@ -49,9 +49,11 @@ model UserDetail {
   id      String  @id @default(uuid())
   role    String
   details Json
+  approved Boolean @default(false)
   user_id String  @unique
   user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
   image   String? @db.LongText
+  location Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   @@map("user_details")
@@ -59,7 +61,7 @@ model UserDetail {
 
 model Cars {
   id           String          @id @default(uuid())
-  user_id      String          @unique
+  user_id      String 
   user         User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
   brand        String
   model        String

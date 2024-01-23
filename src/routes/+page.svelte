@@ -1,15 +1,13 @@
 <script>
-	import { enhance } from '$app/forms';
 	import Users from '$lib/pages/Users.svelte';
-	import { onMount } from 'svelte';
+	import Requests from '../lib/pages/Requests.svelte';
+	import Reports from '../lib/pages/Reports.svelte';
+	import Home from '../lib/pages/Home.svelte';
 	let currentTab = 1;
 	const navigation = [
-		{ label: 'Home', value: 1 },
-		{ label: 'Users', value: 2 },
-		{ label: 'Reports', value: 3 },
-		{ label: 'Requests', value: 4 },
-		{ label: 'Cars', value: 5 },
-		{ label: 'Shops', value: 7 },
+		{ label: 'Users', value: 1, component: Users },
+		{ label: 'Reports', value: 2, component: Reports },
+		{ label: 'Requests', value: 3, component: Requests }
 	];
 </script>
 
@@ -35,10 +33,16 @@
 			</aside>
 		</div>
 
-		<main>
+		<main style="width: 100%;">
 			<div class="row center broider">
 				<div style="margin-top: 20px; margin-bottom: 20px;">
-					<Users />
+					{#each navigation as item}
+						<div hidden={currentTab != item.value} class="box">
+							<slot>
+								<svelte:component this={item.component} />
+							</slot>
+						</div>
+					{/each}
 				</div>
 			</div>
 		</main>
