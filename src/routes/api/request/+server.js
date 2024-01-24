@@ -31,7 +31,7 @@ export async function GET({ request, cookies }) {
 
 	var req = await prisma.request.findMany({
 		where: {
-			mechanic_id: details?.role == 'mechanic' ? session.user.userId : undefined,
+			mechanic_id: details?.role == 'mechanic' || details?.role == 'shop' ? session.user.userId : undefined,
 			user_id: details?.role == 'owner' ? session.user.userId : undefined,
 			NOT: {
 				OR: [
