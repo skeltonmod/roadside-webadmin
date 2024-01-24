@@ -10,7 +10,7 @@ export async function GET({ request, cookies }) {
 	if (!session) {
 		throw error(401, 'Forbidden');
 	}
-    
+
 	const req = await prisma.request.findMany({
 		include: {
 			car: true,

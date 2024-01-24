@@ -16,7 +16,20 @@ export async function GET({ request, cookies }) {
 		}
 	});
 
-	const req = await prisma.request.findMany({
+	const owner_average_ratings = await prisma.request.findMany({
+		where: {
+			mechanic_id: details?.details?.role == 'mechanic' ? session.user.userId : undefined,
+			user_id: details?.details?.role == 'owner' ? session.user.userId : undefined,
+		}
+	}).then(r => {
+		const totalRatings = r.reduce((acc, item) => {
+			const rating = details?.details?.role == 'mechanic' ? item.mechanic_rating : item.owner_rating;
+			return acc + (rating || 0)
+		}, 0);
+		return r.length > 0 ? totalRatings / r.length : 0;
+	});
+
+	var req = await prisma.request.findMany({
 		where: {
 			mechanic_id: details?.role == 'mechanic' ? session.user.userId : undefined,
 			user_id: details?.role == 'owner' ? session.user.userId : undefined,
@@ -45,5 +58,11 @@ export async function GET({ request, cookies }) {
 			}
 		}
 	});
+
+	req = req.map(item => ({
+		...item,
+		owner_average_ratings: owner_average_ratings
+	}));
+
 	return json(req);
 }
