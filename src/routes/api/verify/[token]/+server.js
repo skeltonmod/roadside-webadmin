@@ -14,7 +14,7 @@ export const GET = async ({ params, locals }) => {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/"
+				Location: "/email-verification"
 			}
 		});
 	} catch(e) {
