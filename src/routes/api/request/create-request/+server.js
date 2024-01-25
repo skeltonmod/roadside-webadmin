@@ -18,9 +18,9 @@ export async function POST({ request, cookies }) {
         }
     });
 
-    if(!details.approved){
-        throw error(401, 'You are not yet approved');
-    }
+    // if(!details.approved){
+    //     throw error(401, 'You are not yet approved');
+    // }
 
     const booking = await prisma.request.create({
         data: {
