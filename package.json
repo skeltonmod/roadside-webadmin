@@ -13,7 +13,7 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"start": "node build"
+		"start": "vite build"
 	},
 	"engines": {
 		"node": "20"
