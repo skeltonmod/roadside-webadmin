@@ -32,6 +32,12 @@ export async function POST({ request }) {
 		throw error(401, "Account not yet verified");
 	}
 
+	if(user.details.role == 'shop' || user.details.role == 'mechanic'){
+		if(!user.details.approved){
+			throw error(401, "Account not yet approved by the admin");
+		}
+	}
+
 	switch (user.details.role) {
 		case 'owner':
 			break;
