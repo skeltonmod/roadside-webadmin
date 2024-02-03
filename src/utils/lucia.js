@@ -10,6 +10,11 @@ export const auth = lucia({
 		key: 'key',
 		session: 'session'
 	}),
+	sessionCookie: {
+		attributes: {
+			secure: false
+		}
+	},
 	middleware: sveltekit(),
 	env: 'DEV',
 	getUserAttributes: (data) => {
