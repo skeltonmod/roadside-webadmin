@@ -1,6 +1,4 @@
 <script>
-    // You can add script logic here if needed
-    import image from '../logo.webp'
   </script>
   
   <style>
@@ -23,6 +21,6 @@
   
   <div>
     <!-- Success logo -->
-    <img src={image} alt="Success Logo" />
+    <img src='https://github.com/skeltonmod/roadside-webadmin/blob/main/src/routes/email-verification/logo.webp' alt="Success Logo" />
   
   </div>
