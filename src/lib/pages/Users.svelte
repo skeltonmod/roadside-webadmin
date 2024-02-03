@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import Cookies from 'js-cookie';
 	import Modal from '../Components/Modal.svelte';
+	import {token} from '../stores/token';
 	let showModal = false;
 	let image = null;
 	/**
@@ -12,7 +13,7 @@
 	onMount(async () => {
 		const response = await fetch('/api/users/', {
 			headers: {
-				Authorization: `Bearer ${Cookies.get('auth_session')}`
+				Authorization: `Bearer ${Cookies.get('token')}`
 			}
 		});
 		const data = await response.json();
@@ -23,7 +24,7 @@
 		users = users.filter((item) => item.id !== id);
 		await fetch(`/api/users/delete/${id}`, {
 			headers: {
-				Authorization: `Bearer ${Cookies.get('auth_session')}`
+				Authorization: `Bearer ${Cookies.get('token')}`
 			}
 		});
 	};
@@ -45,7 +46,7 @@
 
 		await fetch(`/api/users/approve/${id}`, {
 			headers: {
-				Authorization: `Bearer ${Cookies.get('auth_session')}`
+				Authorization: `Bearer ${Cookies.get('token')}`
 			}
 		});
 	};
@@ -64,7 +65,7 @@
 
 		await fetch(`/api/users/activate/${id}`, {
 			headers: {
-				Authorization: `Bearer ${Cookies.get('auth_session')}`
+				Authorization: `Bearer ${Cookies.get('token')}`
 			}
 		});
 	};

@@ -6,7 +6,7 @@
 	onMount(async () => {
 		const response = await fetch('/api/reports', {
 			headers: {
-				Authorization: `Bearer ${Cookies.get('auth_session')}`
+				Authorization: `Bearer ${Cookies.get('token')}`
 			}
 		});
 		const data = await response.json();

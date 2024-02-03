@@ -10,7 +10,7 @@ export const load = async ({ locals }) => {
 };
 
 export const actions = {
-	default: async ({ request, locals }) => {
+	default: async ({ request, locals, cookies }) => {
 		const formData = await request.formData();
 		const email = formData.get('email');
 		const password = formData.get('password');
@@ -30,9 +30,16 @@ export const actions = {
 			// and validate password
 			const key = await auth.useKey('email', email.toLowerCase(), password);
 			const session = await auth.createSession({
-				userId: key.userId,
-				attributes: {}
+				userId: key.userId
 			});
+			cookies.set('token', session.sessionId, {
+				path: '/',
+				httpOnly: false,
+				sameSite: 'strict',
+				secure: false,
+				maxAge: 60 * 60 * 24 * 30
+			});
+
 			locals.auth.setSession(session); // set session cookie
 		} catch (e) {
 			if (

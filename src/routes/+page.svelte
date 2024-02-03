@@ -9,6 +9,7 @@
 		{ label: 'Reports', value: 2, component: Reports },
 		{ label: 'Requests', value: 3, component: Requests }
 	];
+
 </script>
 
 <div class="container">

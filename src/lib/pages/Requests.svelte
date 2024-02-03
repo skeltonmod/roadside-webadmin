@@ -5,7 +5,7 @@
 	onMount(async () => {
 		const response = await fetch('/api/request/all', {
 			headers: {
-				Authorization: `Bearer ${Cookies.get('auth_session')}`
+				Authorization: `Bearer ${Cookies.get('token')}`
 			}
 		});
 		const data = await response.json();
@@ -16,14 +16,14 @@
 			(async () => {
 				const response = await fetch('/api/request/cancel-request', {
 					headers: {
-						Authorization: `Bearer ${Cookies.get('auth_session')}`
+						Authorization: `Bearer ${Cookies.get('token')}`
 					}
 				});
 
 				const data = await response.json();
 				console.log(data);
 			})();
-		}, 5 * 60 * 1000);
+		}, 3 * 60 * 1000);
 	});
 </script>
 
