@@ -13,10 +13,8 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"start": "vite build"
-	},
-	"engines": {
-		"node": "20"
+		"start": "vite build",
+		"postinstall": "prisma generate"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
