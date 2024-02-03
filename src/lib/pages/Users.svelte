@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import Cookies from 'js-cookie';
 	import Modal from '../Components/Modal.svelte';
-	import {token} from '../stores/token';
 	let showModal = false;
 	let image = null;
 	/**
