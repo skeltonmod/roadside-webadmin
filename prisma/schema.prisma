@@ -31,6 +31,7 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
   reporter Reports[] @relation("Reporter")
   reportee Reports[] @relation("Reportee")
+  deactivated Boolean @default(false)
 
   @@map("users")
 }

@@ -11,9 +11,12 @@ export async function GET({request, cookies, params}){
     }
     const id = params.id;
     console.log(id);
-    await prisma.user.delete({
+    await prisma.user.update({
         where: {
             id
+        },
+        data: {
+            deactivated: true
         }
     });
 

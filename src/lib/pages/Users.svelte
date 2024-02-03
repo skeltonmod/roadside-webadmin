@@ -113,9 +113,13 @@
 				<td
 					><a
 						href="#Deactivate"
+						style={`color: ${user.deactivated ? 'grey' : ''}`}
 						on:click={() => {
+							if(user.deactivated){
+								return;
+							}
 							handleDeactivate(user.id);
-						}}>Deactivate</a
+						}}>{user.deactivated ? 'Deactivated' : 'Deactivate'}</a
 					>
 					{#if user.details.role != 'mechanic' || user.details.role != 'shop'}
 						<a
